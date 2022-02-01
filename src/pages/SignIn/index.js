@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from 'react-loader-spinner';
-import { Container, Form, Input, Button, StyledLink, MyWalletTitle } from "../../components/FormComponents";
+import { useState } from "react";
 import useApi from "../../hooks/useApi";
+import { Container, Form, Input, Button, StyledLink, MyWalletTitle } from "../../components/FormComponents";
 
-export default function SignUp() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', passwordConfirm: '' });
+export default function SignIn() {
+  const [formData, setFormData] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const api = useApi()
 
@@ -22,33 +22,23 @@ export default function SignUp() {
     setIsLoading(true);
 
     api.user
-      .signUp({
-        ...formData
-      })
-      .then(() => {
-        setIsLoading(false);
-        navigate("/");
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        alert((error.response.data))
-      });
+    .signIn({ ...formData })
+        .then((response) => {
+            setIsLoading(false)
+            navigate("/")
+            console.log(response)
+        })
+        .catch(() => {
+            setIsLoading(false)
+            alert('Erro, tente novamente')
+        })
   }
 
   return (
     <Container>
-      <MyWalletTitle>MyWallet</MyWalletTitle>
+      <MyWalletTitle>My Wallet</MyWalletTitle>
 
       <Form onSubmit={handleSubmit}>
-        <Input
-        type="text"
-        placeholder="Nome"
-        name="name"
-        onChange={handleChange}
-        value={formData.name}
-        disabled={isLoading}
-        required    
-        />
         <Input
           type="email"
           placeholder="E-mail"
@@ -67,26 +57,18 @@ export default function SignUp() {
           disabled={isLoading}
           required
         />
-        <Input
-          type="password"
-          placeholder="Confirme a senha"
-          name="passwordConfirm"
-          onChange={handleChange}
-          value={formData.passwordConfirm}
-          disabled={isLoading}
-          required
-        />
+
         <Button type="submit" disabled={isLoading}>
           {
             isLoading
               ? <ThreeDots type="ThreeDots" color="#FFFFFF" height={50} width={50} />
-              : "Cadastrar"
+              : "Entrar"
           }
         </Button>
       </Form>
 
-      <StyledLink to="/">
-        Já tem uma conta? Entre agora!
+      <StyledLink to="/signup">
+        Primeira vez? Cadastre-se!
       </StyledLink>
     </Container>
   );
