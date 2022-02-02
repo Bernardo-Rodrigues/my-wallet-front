@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from 'react-loader-spinner';
 import useApi from "../../hooks/useApi";
-import { Container, Form, Input, Button, StyledLink, MyWalletTitle } from "../../components/FormComponents";
+import { Form, Input, Button, StyledLink, MyWalletTitle } from "../../components/FormComponents";
+import Container from "../../components/Container";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({ email: '', password: '' })
@@ -32,7 +33,7 @@ export default function SignIn() {
   }
 
   return (
-    <Container>
+    <Container center>
       <MyWalletTitle>My Wallet</MyWalletTitle>
 
       <Form onSubmit={handleSubmit}>

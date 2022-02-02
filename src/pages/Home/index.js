@@ -1,9 +1,9 @@
-import { Container } from "../../components/FormComponents";
 import { AddTrasactions, Button, Header, NoTransactions, Registers } from "./styles";
 import { ExitOutline, AddCircleOutline, RemoveCircleOutline } from 'react-ionicons'
 import { useEffect, useState } from "react";
 import useApi from "../../hooks/useApi";
 import { useNavigate } from "react-router";
+import Container from "../../components/Container";
 
 export default function Home() {
   const user = JSON.parse(localStorage.getItem("User"))
@@ -20,7 +20,6 @@ export default function Home() {
     }
     getData()
   }, [])
-  console.log(userTransactions)
 
   function logout(){
     localStorage.removeItem("User")
