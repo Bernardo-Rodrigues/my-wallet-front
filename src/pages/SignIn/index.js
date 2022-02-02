@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from 'react-loader-spinner';
-import { useState } from "react";
 import useApi from "../../hooks/useApi";
 import { Container, Form, Input, Button, StyledLink, MyWalletTitle } from "../../components/FormComponents";
 
@@ -16,22 +16,19 @@ export default function SignIn() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-
     setIsLoading(true);
 
-    api.user
-    .signIn({ ...formData })
-        .then((response) => {
-            setIsLoading(false)
-            navigate("/")
-            console.log(response)
-        })
-        .catch(() => {
-            setIsLoading(false)
-            alert('Erro, tente novamente')
-        })
+    try {
+      const res = await api.user.signIn(formData)
+      localStorage.setItem("User", JSON.stringify({token:res.data.token, name:res.data.name}))
+      setIsLoading(false);
+      navigate("/");
+    } catch (error) {
+      setIsLoading(false);
+      alert((error.response.data))
+    }
   }
 
   return (
