@@ -1,35 +1,38 @@
-import { AddTrasactions, Button, Header, NoTransactions, Registers } from "./styles";
+import { AddTrasactions, Button, Desc, Header, NoTransactions, Registers, Transaction, Value } from "./styles";
 import { ExitOutline, AddCircleOutline, RemoveCircleOutline } from 'react-ionicons'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useApi from "../../hooks/useApi";
 import { useNavigate } from "react-router";
 import Container from "../../components/Container";
+import { UserContext } from "../../context/user";
 
 export default function Home() {
-  const user = JSON.parse(localStorage.getItem("User"))
-  const [ userTransactions, setUserTransactions ] = useState([]) 
   const api = useApi()
   const navigate = useNavigate()
-
+  const [ userTransactions, setUserTransactions ] = useState([]) 
+  const { user, setUser } = useContext(UserContext)
+  
   useEffect( () => {
+    if(!user) navigate("/signin")
     async function getData(){
-      const header = { headers: { Authorization: `Bearer ${user.token}` }}
-      const res = await api.transactions.getAllTransactions(header)
+      const headers = { headers: { Authorization: `Bearer ${user?.token}` }}
+      const res = await api.transactions.getAllTransactions(headers)
       
       setUserTransactions(res.data)
     }
     getData()
+    //eslint-disable-next-line
   }, [])
 
   function logout(){
-    localStorage.removeItem("User")
+    setUser(null)
     navigate("/signin")
   }
 
   return (
     <Container>
       <Header>
-        <h2>Olá, {user.name}</h2>
+        <h2>Olá, {user?.name}</h2>
         <ExitOutline
           color={'#FFF'}
           height="32px"
@@ -42,7 +45,17 @@ export default function Home() {
         {
           userTransactions.length 
           ? userTransactions.map( (transaction, index) => {
-              return <p key={index}>transaction</p>
+              return(
+                <Transaction>
+                  <Desc>
+                    <span>{transaction.date}</span>
+                    <p>{transaction.desc}</p>
+                  </Desc>
+                  <Value type={transaction.type}>
+                    {transaction.value}
+                  </Value>
+                </Transaction>
+              )  
             })
           : <NoTransactions>Não há registros de entrada ou saída</NoTransactions> 
         }

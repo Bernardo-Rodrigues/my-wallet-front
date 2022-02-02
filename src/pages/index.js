@@ -1,7 +1,7 @@
+import { Route, Routes } from "react-router";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import Home from "./Home";
-import { Route, Routes } from "react-router";
 import NewTransaction from "./NewTransaction";
 
 export default function Pages() {

@@ -6,7 +6,6 @@ export const Header = styled.header`
     font-weight: bold;
     font-size: 26px;
     line-height: 31px;
-
     color: #FFFFFF;
     
     align-self:flex-start;

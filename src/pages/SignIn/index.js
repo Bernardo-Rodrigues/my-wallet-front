@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from 'react-loader-spinner';
 import useApi from "../../hooks/useApi";
 import { Form, Input, Button, StyledLink, MyWalletTitle } from "../../components/FormComponents";
 import Container from "../../components/Container";
+import { UserContext } from "../../context/user";
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const api = useApi()
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext)
 
-  const api = useApi()
+  useEffect(()=>{
+    if(user)navigate("/")
+    //eslint-disable-next-line
+  }, [])
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,9 +28,10 @@ export default function SignIn() {
     setIsLoading(true);
 
     try {
-      const res = await api.user.signIn(formData)
-      localStorage.setItem("User", JSON.stringify({token:res.data.token, name:res.data.name}))
+      const { data } = await api.user.signIn(formData)
+      localStorage.setItem("User", JSON.stringify( { token:data.token, name:data.name } ))
       setIsLoading(false);
+      setUser({ token:data.token, name:data.name })
       navigate("/");
     } catch (error) {
       setIsLoading(false);

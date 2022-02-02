@@ -2,36 +2,36 @@ import Container from "../../components/Container";
 import { Button, Form, Input } from "../../components/FormComponents";
 import { Header } from "./styles";
 import { ThreeDots } from "react-loader-spinner";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useApi from "../../hooks/useApi";
 import { useLocation, useNavigate } from "react-router";
+import { UserContext } from "../../context/user";
 
 export default function NewTransaction(){
+    const api = useApi()
+    const navigate = useNavigate()
     const  pathname  = useLocation().pathname.replace("/", "")
     const [formData, setFormData] = useState({ value: '', desc: '' })
     const [isLoading, setIsLoading] = useState(false);
-    const api = useApi()
-    const navigate = useNavigate()
-    const user = JSON.parse(localStorage.getItem("User"))
+    const { user } = useContext(UserContext)
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-      }
-    
-      async function handleSubmit(e) {
-        e.preventDefault();
-        setIsLoading(true);
+    }
+
+    async function handleSubmit(e) {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
         const header = { headers: { Authorization: `Bearer ${user.token}` }}
-        try {
-            const res = await api.transactions.registerTransaction({...formData, type:pathname}, header)
-            console.log(res.data)
-            setIsLoading(false);
-            navigate("/");
-          } catch (error) {
-            setIsLoading(false);
-            alert((error.response.data))
-          }
-      }
+        await api.transactions.registerTransaction({...formData, type:pathname}, header)
+        setIsLoading(false);
+        navigate("/");
+        } catch (error) {
+        setIsLoading(false);
+        alert((error.response.data))
+        }
+    }
 
     return(
         <Container>

@@ -17,37 +17,40 @@ export const Header = styled.header`
 `
 
 export const Registers = styled.main`
-    margin: 0 25px; 
     width:100%;
     height:100%;
     background: #FFF;
     border-radius: 5px;
-    display:flex;
+    margin: 0 25px; 
+    padding: 20px 12px 10px;
     
+    display:flex;
+    flex-direction:column;
 `
 
 export const AddTrasactions = styled.nav`
     display:flex;
     justify-content:space-between;
+
     width:100%;
     margin: 15px 0;
 `
 
 export const Button = styled.button`
-    padding: 10px; 
     width:155px;
     height:115px;
     border: 0;
     background: #A328D6;;
     border-radius: 5px;
+    padding: 10px; 
     
- span{
-    text-align:left;
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 17px;
-    line-height: 20px;
- }
+    span{
+        text-align:left;
+        color: #FFFFFF;
+        font-weight: bold;
+        font-size: 17px;
+        line-height: 20px;
+    }
     
     display:flex;
     flex-direction:column;
@@ -57,10 +60,41 @@ export const Button = styled.button`
 
 export const NoTransactions = styled.div`
     width: 180px;
+    margin: auto;
+
     font-size: 20px;
     line-height: 23px;
     text-align: center;
-    margin: auto;
-
     color: #868686;
+`
+
+export const Transaction = styled.div`
+    display:flex;
+    justify-content:space-between;
+
+    width:100%;
+`
+export const Desc = styled.div`
+    display:flex;
+
+    span{
+        font-size: 16px;
+        line-height: 19px;
+
+        color: #C6C6C6;
+    }
+    p{
+        font-size: 16px;
+        line-height: 19px;
+
+        color: #000000;
+    }
+`
+export const Value = styled.div`
+    display:flex;
+
+    font-size: 16px;
+    line-height: 19px;
+    text-align: right;
+    color: ${ ({type}) => type === "entry" ? "#03AC00" : "#C70000" };
 `

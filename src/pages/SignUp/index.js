@@ -8,10 +8,10 @@ import Container from "../../components/Container";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const api = useApi()
   const [formData, setFormData] = useState({ name: '', email: '', password: '', passwordConfirm: '' });
   const [isLoading, setIsLoading] = useState(false);
-  const api = useApi()
-
+  
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
@@ -80,7 +80,7 @@ export default function SignUp() {
         </Button>
       </Form>
 
-      <StyledLink to="/">
+      <StyledLink to="/signin">
         Já tem uma conta? Entre agora!
       </StyledLink>
     </Container>
