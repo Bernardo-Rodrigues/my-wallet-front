@@ -4,13 +4,15 @@ import { Header } from "./styles";
 import { ThreeDots } from "react-loader-spinner";
 import { useState } from "react";
 import useApi from "../../hooks/useApi";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
-export default function Entry(){
+export default function NewTransaction(){
+    const  pathname  = useLocation().pathname.replace("/", "")
     const [formData, setFormData] = useState({ value: '', desc: '' })
     const [isLoading, setIsLoading] = useState(false);
     const api = useApi()
     const navigate = useNavigate()
+    const user = JSON.parse(localStorage.getItem("User"))
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -19,8 +21,9 @@ export default function Entry(){
       async function handleSubmit(e) {
         e.preventDefault();
         setIsLoading(true);
+        const header = { headers: { Authorization: `Bearer ${user.token}` }}
         try {
-            const res = await api.transactions.registerEntry(formData)
+            const res = await api.transactions.registerTransaction({...formData, type:pathname}, header)
             console.log(res.data)
             setIsLoading(false);
             navigate("/");
@@ -32,7 +35,7 @@ export default function Entry(){
 
     return(
         <Container>
-            <Header>Nova entrada</Header>
+            <Header>Nova {pathname === "entry" ? "entrada" : "saída"}</Header>
             <Form onSubmit={handleSubmit}>
                 <Input
                     type="text"
@@ -57,7 +60,7 @@ export default function Entry(){
                 {
                     isLoading
                     ? <ThreeDots type="ThreeDots" color="#FFFFFF" height={50} width={50} />
-                    : "Salvar entrada"
+                    : `Salvar ${pathname === "entry" ? "entrada" : "saída"}`
                 }
                 </Button>
             </Form>

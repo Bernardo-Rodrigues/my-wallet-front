@@ -5,11 +5,7 @@ export default class TransactionsApi {
     return api.get("/transactions", headers);
   }
 
-  registerEntry(data) {
-    return api.post("/transactions", data);
-  }
-
-  registerOutput(data) {
-    return api.post("/transactions", data);
+  registerTransaction(data, headers) {
+    return api.post("/transactions", data, headers);
   }
 }

@@ -41,8 +41,8 @@ export default function Home() {
       <Registers>
         {
           userTransactions.length 
-          ? userTransactions.map( transaction => {
-              return <p>transaction</p>
+          ? userTransactions.map( (transaction, index) => {
+              return <p key={index}>transaction</p>
             })
           : <NoTransactions>Não há registros de entrada ou saída</NoTransactions> 
         }
