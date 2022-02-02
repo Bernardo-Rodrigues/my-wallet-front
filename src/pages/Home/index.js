@@ -1,10 +1,10 @@
-import { AddTrasactions, Button, Desc, Header, NoTransactions, Registers, Transaction, Value } from "./styles";
+import { AddTrasactions, Balance, Button, Desc, Header, NoTransactions, Registers, Transaction, Transactions, Value } from "./styles";
 import { ExitOutline, AddCircleOutline, RemoveCircleOutline } from 'react-ionicons'
 import { useContext, useEffect, useState } from "react";
 import useApi from "../../hooks/useApi";
 import { useNavigate } from "react-router";
-import Container from "../../components/Container";
 import { UserContext } from "../../context/user";
+import Container from "../../components/Container";
 
 export default function Home() {
   const api = useApi()
@@ -44,19 +44,24 @@ export default function Home() {
       <Registers>
         {
           userTransactions.length 
-          ? userTransactions.map( (transaction, index) => {
-              return(
-                <Transaction>
-                  <Desc>
-                    <span>{transaction.date}</span>
-                    <p>{transaction.desc}</p>
-                  </Desc>
-                  <Value type={transaction.type}>
-                    {transaction.value}
-                  </Value>
-                </Transaction>
-              )  
-            })
+          ? <>
+              <Transactions>
+                  {userTransactions.map( (transaction, index) => {
+                    return(
+                      <Transaction>
+                        <Desc>
+                          <span>{transaction.date}</span>
+                          <p>{transaction.desc}</p>
+                        </Desc>
+                        <Value type={transaction.type}>
+                          {transaction.value}
+                        </Value>
+                      </Transaction>
+                    )  
+                  })}
+              </Transactions>
+              <Balance><span>SALDO</span>{100.52}</Balance>
+            </>
           : <NoTransactions>Não há registros de entrada ou saída</NoTransactions> 
         }
       </Registers>  
