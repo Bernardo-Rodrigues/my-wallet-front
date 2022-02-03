@@ -5,6 +5,7 @@ import useApi from "../../hooks/useApi";
 import { useNavigate } from "react-router";
 import { UserContext } from "../../context/user";
 import Container from "../../components/Container";
+import { EditTransactionContext } from "../../context/transaction";
 
 export default function Home() {
   const api = useApi()
@@ -13,6 +14,7 @@ export default function Home() {
   const [ balance, setBalance ] = useState(0) 
   const [ reload, setReload ] = useState(false)
   const { user, setUser } = useContext(UserContext)
+  const { setEditTransaction } = useContext(EditTransactionContext)
   
   useEffect( () => {
     if(!user) navigate("/signin")
@@ -58,6 +60,11 @@ export default function Home() {
     }
   }
 
+  async function editUserTransaction({value, desc, type, _id}){
+    setEditTransaction({value, desc, type, _id})
+    navigate("/edit")
+  }
+
   return (
     <Container>
       <Header>
@@ -77,8 +84,8 @@ export default function Home() {
               <Transactions>
                   {userTransactions.map( (transaction, index) => {
                     return(
-                      <Transaction key={index}>
-                        <Desc>
+                          <Transaction key={index}>
+                      <Desc onClick={()=>editUserTransaction(transaction)}>
                           <span>{transaction.date}</span>
                           <p>{transaction.desc}</p>
                         </Desc>

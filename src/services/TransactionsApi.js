@@ -12,4 +12,8 @@ export default class TransactionsApi {
   deleteTransaction(headers, id) {
     return api.delete(`/transactions/${id}`, headers);
   }
+
+  updateTransaction(body, headers, id) {
+    return api.put(`/transactions/${id}`, body, headers);
+  }
 }

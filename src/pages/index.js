@@ -12,6 +12,7 @@ export default function Pages() {
             <Route path="/" element={<Home/>}></Route>
             <Route path="/entry" element={<NewTransaction/>}></Route>
             <Route path="/output" element={<NewTransaction/>}></Route>
+            <Route path="/edit" element={<NewTransaction/>}></Route>
         </Routes>
     )
 }
