@@ -9,19 +9,24 @@ import Container from "../../components/Container";
 export default function SignUp() {
   const navigate = useNavigate();
   const api = useApi()
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', passwordConfirm: '' });
+  const [formData, setFormData] = useState({ username: '', email: '', password: '', passwordConfirm: '' });
   const [isLoading, setIsLoading] = useState(false);
   
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
-
+  
   async function handleSubmit(e) {
     e.preventDefault();
-    setIsLoading(true);
+
+    if(formData.password !== formData.passwordConfirm) {
+      setIsLoading(false);
+      return alert("Passwords must be equal")
+    }
 
     try {
-      await api.user.signUp(formData)
+      const { username, email, password } = formData
+      await api.user.signUp({ username, email, password })
       setIsLoading(false);
       navigate("/signin");
     } catch (error) {
@@ -36,13 +41,14 @@ export default function SignUp() {
 
       <Form onSubmit={handleSubmit}>
         <Input
-        type="text"
-        placeholder="Nome"
-        name="name"
-        onChange={handleChange}
-        value={formData.name}
-        disabled={isLoading}
-        required    
+          type="text"
+          placeholder="Nome"
+          name="username"
+          onChange={handleChange}
+          value={formData.username}
+          disabled={isLoading}
+          maxLength="20"
+          required    
         />
         <Input
           type="email"

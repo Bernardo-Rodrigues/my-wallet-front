@@ -20,16 +20,16 @@ export default function NewTransaction(){
     }
 
     async function handleSubmit(e) {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-        const header = { headers: { Authorization: `Bearer ${user.token}` }}
-        await api.transactions.registerTransaction({...formData, type:pathname}, header)
-        setIsLoading(false);
-        navigate("/");
+        e.preventDefault();
+        setIsLoading(true);
+        try {
+            const header = { headers: { Authorization: `Bearer ${user.token}` }}
+            await api.transactions.registerTransaction({...formData, type:pathname}, header)
+            setIsLoading(false);
+            navigate("/");
         } catch (error) {
-        setIsLoading(false);
-        alert((error.response.data))
+            setIsLoading(false);
+            console.log((error.response.data))
         }
     }
 
@@ -44,6 +44,7 @@ export default function NewTransaction(){
                     onChange={handleChange}
                     value={formData.value}
                     disabled={isLoading}
+                    maxLength="9"
                     required
                 />
                 <Input
@@ -53,6 +54,7 @@ export default function NewTransaction(){
                     onChange={handleChange}
                     value={formData.desc}
                     disabled={isLoading}
+                    maxLength="16"
                     required
                 />
 

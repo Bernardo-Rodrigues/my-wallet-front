@@ -1,4 +1,4 @@
-import { AddTrasactions, Balance, Button, Desc, Header, NoTransactions, Registers, Transaction, Transactions, Value } from "./styles";
+import { AddTrasactions, Balance, Button, Delete, Desc, Header, NoTransactions, Registers, Transaction, Transactions, Value } from "./styles";
 import { ExitOutline, AddCircleOutline, RemoveCircleOutline } from 'react-ionicons'
 import { useContext, useEffect, useState } from "react";
 import useApi from "../../hooks/useApi";
@@ -10,29 +10,58 @@ export default function Home() {
   const api = useApi()
   const navigate = useNavigate()
   const [ userTransactions, setUserTransactions ] = useState([]) 
+  const [ balance, setBalance ] = useState(0) 
+  const [ reload, setReload ] = useState(false)
   const { user, setUser } = useContext(UserContext)
   
   useEffect( () => {
     if(!user) navigate("/signin")
     async function getData(){
       const headers = { headers: { Authorization: `Bearer ${user?.token}` }}
-      const res = await api.transactions.getAllTransactions(headers)
-      
-      setUserTransactions(res.data)
+      try {
+        const res = await api.transactions.getAllTransactions(headers)
+        
+        setUserTransactions(res.data.userTransactions)
+        setBalance(res.data.balance)
+      } catch (error) {
+        console.log(error.response.status)
+        if(error.response.status === 401) {
+          setUser(null)
+          navigate("/signin")
+        }
+      }
     }
     getData()
+    setReload(false)
     //eslint-disable-next-line
-  }, [])
+  }, [reload])
 
   function logout(){
     setUser(null)
     navigate("/signin")
   }
 
+  async function deleteUserTransaction(id){
+    const res = window.confirm("Confirmar ?")
+    if(res){
+      const headers = { headers: { Authorization: `Bearer ${user?.token}` }}
+      try {
+        await api.transactions.deleteTransaction(headers, id)
+        setReload(true)
+      } catch (error) {
+        console.log(error.response.status)
+        if(error.response.status === 401) {
+          setUser(null)
+          navigate("/signin")
+        }
+      }
+    }
+  }
+
   return (
     <Container>
       <Header>
-        <h2>Olá, {user?.name}</h2>
+        <h2>Olá, {user?.username}</h2>
         <ExitOutline
           color={'#FFF'}
           height="32px"
@@ -48,19 +77,20 @@ export default function Home() {
               <Transactions>
                   {userTransactions.map( (transaction, index) => {
                     return(
-                      <Transaction>
+                      <Transaction key={index}>
                         <Desc>
                           <span>{transaction.date}</span>
                           <p>{transaction.desc}</p>
                         </Desc>
                         <Value type={transaction.type}>
                           {transaction.value}
+                          <Delete onClick={()=>deleteUserTransaction(transaction._id)}>x</Delete>
                         </Value>
                       </Transaction>
                     )  
                   })}
               </Transactions>
-              <Balance><span>SALDO</span>{100.52}</Balance>
+              <Balance type={parseFloat(balance) < 0 ? "nagative" : "positive"}><span>SALDO</span>{balance}</Balance>
             </>
           : <NoTransactions>Não há registros de entrada ou saída</NoTransactions> 
         }

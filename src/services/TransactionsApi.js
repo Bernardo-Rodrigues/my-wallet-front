@@ -8,4 +8,8 @@ export default class TransactionsApi {
   registerTransaction(data, headers) {
     return api.post("/transactions", data, headers);
   }
+
+  deleteTransaction(headers, id) {
+    return api.delete(`/transactions/${id}`, headers);
+  }
 }

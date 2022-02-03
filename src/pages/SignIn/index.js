@@ -29,9 +29,9 @@ export default function SignIn() {
 
     try {
       const { data } = await api.user.signIn(formData)
-      localStorage.setItem("User", JSON.stringify( { token:data.token, name:data.name } ))
+      
       setIsLoading(false);
-      setUser({ token:data.token, name:data.name })
+      setUser({ token:data.token, username:data.username })
       navigate("/");
     } catch (error) {
       setIsLoading(false);
