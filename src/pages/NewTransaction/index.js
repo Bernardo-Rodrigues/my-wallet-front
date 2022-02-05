@@ -7,7 +7,7 @@ import useApi from "../../hooks/useApi";
 import { useLocation, useNavigate } from "react-router";
 import { UserContext } from "../../context/user";
 import { EditTransactionContext } from "../../context/transaction";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 
 export default function NewTransaction(){
     const api = useApi()
