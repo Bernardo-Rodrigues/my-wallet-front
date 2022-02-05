@@ -17,9 +17,28 @@ export default function NewTransaction(){
     const { editTransaction, setEditTransaction } = useContext(EditTransactionContext)
     const [ formData, setFormData ] = useState({value:"", desc:""})
     const [ isLoading, setIsLoading ] = useState(false);
+    const [ title, setTitle] = useState("")
+    const [ buttontext, setButtontext] = useState("")
 
     useEffect(()=>{
-        if(pathname === "edit") setFormData(editTransaction)
+        if(pathname === "edit") {
+            setFormData(editTransaction)
+            if(editTransaction.type === "entry"){
+                setTitle("Editar entrada")
+                setButtontext("Atualizar entrada")
+            }else{
+                setTitle("Editar saída") 
+                setButtontext("Atualizar saída")
+            }
+        }else{
+            if(pathname === "entry"){
+                setTitle("Nova entrada") 
+                setButtontext("Salvar entrada")
+            }else{
+                setTitle("Nova saída") 
+                setButtontext("Salvar saída")
+            }
+        }
         //eslint-disable-next-line
     },[])
     
@@ -35,7 +54,7 @@ export default function NewTransaction(){
             const {value, desc } = formData
             const type = pathname === "edit" ? editTransaction.type : pathname
             const data = {value, desc, type}
-            
+
             if(pathname === "edit") await api.transactions.updateTransaction(data, header, editTransaction._id)
             else {
                 await api.transactions.registerTransaction(data, header)
@@ -46,22 +65,22 @@ export default function NewTransaction(){
             navigate("/");
         } catch (error) {
             setIsLoading(false);
-            console.log((error.response.data))
+            console.log((error.response))
         }
     }
 
     return(
         <Container>
-            <Header>{pathname === "edit" ? "Editar" : "Nova"} {pathname === "entry" ? "entrada" : "saída"}</Header>
+            <Header>{title}</Header>
             <Form onSubmit={handleSubmit}>
                 <Input
-                    type="text"
+                    type="number"
                     placeholder="Valor"
                     name="value"
                     onChange={handleChange}
                     value={formData.value}
                     disabled={isLoading}
-                    maxLength="9"
+                    max="100000"
                     required
                 />
                 <Input
@@ -79,7 +98,7 @@ export default function NewTransaction(){
                 {
                     isLoading
                     ? <ThreeDots type="ThreeDots" color="#FFFFFF" height={50} width={50} />
-                    : `${pathname === "edit" ? "Atualizar" : "Salvar"} ${pathname === "entry" ? "entrada" : "saída"}`
+                    : buttontext
                 }
                 </Button>
             </Form>

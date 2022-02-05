@@ -26,7 +26,7 @@ export default function Home() {
         setUserTransactions(res.data.userTransactions)
         setBalance(res.data.balance)
       } catch (error) {
-        console.log(error.response.status)
+        console.log(error.response)
         if(error.response.status === 401) {
           setUser(null)
           navigate("/signin")
@@ -51,7 +51,7 @@ export default function Home() {
         await api.transactions.deleteTransaction(headers, id)
         setReload(true)
       } catch (error) {
-        console.log(error.response.status)
+        console.log(error.response)
         if(error.response.status === 401) {
           setUser(null)
           navigate("/signin")
@@ -61,7 +61,7 @@ export default function Home() {
   }
 
   async function editUserTransaction({value, desc, type, _id}){
-    setEditTransaction({value, desc, type, _id})
+    setEditTransaction({value:value.replace(",","."), desc, type, _id})
     navigate("/edit")
   }
 
@@ -90,7 +90,7 @@ export default function Home() {
                           <p>{transaction.desc}</p>
                         </Desc>
                         <Value type={transaction.type}>
-                          {transaction.value}
+                          {transaction.value.replace(".",",")}
                           <Delete onClick={()=>deleteUserTransaction(transaction._id)}>x</Delete>
                         </Value>
                       </Transaction>
