@@ -20,13 +20,13 @@ export default function SignUp() {
     e.preventDefault();
 
     if(formData.password !== formData.passwordConfirm) {
-      setIsLoading(false); 
+      setIsLoading(false);
       return alert("Passwords must be equal")
     }
 
     try {
-      const res = await api.test.test()
-      console.log(res)
+      const { username, email, password } = formData
+      await api.user.signUp({ username, email, password })
       setIsLoading(false);
       navigate("/signin");
     } catch (error) {
