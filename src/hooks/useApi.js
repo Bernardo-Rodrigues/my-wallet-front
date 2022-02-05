@@ -6,4 +6,4 @@ export default function useApi() {
     user: new UserApi(),
     transactions: new TransactionsApi()
   };
-}
+} 
