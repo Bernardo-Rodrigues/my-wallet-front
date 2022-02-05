@@ -25,7 +25,6 @@ export default function SignUp() {
     }
 
     try {
-      const { username, email, password } = formData
       const res = await api.test.test()
       console.log(res)
       setIsLoading(false);
