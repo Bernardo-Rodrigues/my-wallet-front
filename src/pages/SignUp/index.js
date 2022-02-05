@@ -26,7 +26,8 @@ export default function SignUp() {
 
     try {
       const { username, email, password } = formData
-      await api.user.signUp({ username, email, password })
+      const res = await api.test.test()
+      console.log(res)
       setIsLoading(false);
       navigate("/signin");
     } catch (error) {
