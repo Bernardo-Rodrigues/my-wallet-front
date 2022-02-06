@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Header = styled.header`
+export const HeaderElement = styled.header`
     display: flex;
     justify-content: space-between;
 
@@ -18,7 +18,7 @@ export const Header = styled.header`
     }
 `
 
-export const Registers = styled.main`
+export const RegistersElement = styled.main`
     width:100%;
     height:100%;
     max-height:70vh;
@@ -33,7 +33,7 @@ export const Registers = styled.main`
     flex-direction:column;
 `
 
-export const AddTrasactions = styled.nav`
+export const AddTrasactionsElement = styled.nav`
     display:flex;
     justify-content:space-between;
 
@@ -41,7 +41,7 @@ export const AddTrasactions = styled.nav`
     margin: 15px 0;
 `
 
-export const Button = styled.button`
+export const ButtonElement = styled.button`
     width:155px;
     height:115px;
     border: 0;

@@ -1,13 +1,13 @@
+import { useContext, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { ThreeDots } from "react-loader-spinner";
+import { UserContext } from "../../context/user";
+import { EditTransactionContext } from "../../context/transaction";
+import useApi from "../../hooks/useApi";
+import setTexts from "../../utils/setTexts";
 import Container from "../../components/Container";
 import { Button, Form, Input } from "../../components/FormComponents";
 import { Header } from "./styles";
-import { ThreeDots } from "react-loader-spinner";
-import { useContext, useState } from "react";
-import useApi from "../../hooks/useApi";
-import { useLocation, useNavigate } from "react-router";
-import { UserContext } from "../../context/user";
-import { EditTransactionContext } from "../../context/transaction";
-import { useEffect } from "react";
 
 export default function NewTransaction(){
     const api = useApi()
@@ -21,24 +21,10 @@ export default function NewTransaction(){
     const [ buttontext, setButtontext] = useState("")
 
     useEffect(()=>{
-        if(pathname === "edit") {
-            setFormData(editTransaction)
-            if(editTransaction.type === "entry"){
-                setTitle("Editar entrada")
-                setButtontext("Atualizar entrada")
-            }else{
-                setTitle("Editar saída") 
-                setButtontext("Atualizar saída")
-            }
-        }else{
-            if(pathname === "entry"){
-                setTitle("Nova entrada") 
-                setButtontext("Salvar entrada")
-            }else{
-                setTitle("Nova saída") 
-                setButtontext("Salvar saída")
-            }
-        }
+        const [ title, buttonText, updateFormData] = setTexts(pathname, editTransaction, formData)
+        setTitle(title)
+        setButtontext(buttonText)
+        setFormData(updateFormData)
         //eslint-disable-next-line
     },[])
     
@@ -80,7 +66,7 @@ export default function NewTransaction(){
                     onChange={handleChange}
                     value={formData.value}
                     disabled={isLoading}
-                    max="100000"
+                    max="999999"
                     required
                 />
                 <Input

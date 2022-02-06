@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { ThreeDots } from 'react-loader-spinner';
 import useApi from "../../hooks/useApi";
 import { Form, Input, Button, StyledLink, MyWalletTitle } from "../../components/FormComponents";
 import Container from "../../components/Container";
+import { fireAlert } from "../../utils/alerts";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function SignUp() {
 
     if(formData.password !== formData.passwordConfirm) {
       setIsLoading(false);
-      return alert("Passwords must be equal")
+      return await fireAlert("Passwords must be equal")
     }
 
     try {
@@ -31,7 +31,7 @@ export default function SignUp() {
       navigate("/signin");
     } catch (error) {
       setIsLoading(false);
-      alert((error.response.data))
+       fireAlert((error.response.data))
     }
   }
 
