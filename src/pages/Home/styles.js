@@ -86,7 +86,7 @@ export const Transaction = styled.div`
 export const Desc = styled.div`
     display:flex;
     align-items:center;
-    max-width:60%;
+    max-width:70%;
 
     span{
         font-size: 15px;

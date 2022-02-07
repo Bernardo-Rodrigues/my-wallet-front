@@ -21,7 +21,7 @@ export default function SignUp() {
 
     if(formData.password !== formData.passwordConfirm) {
       setIsLoading(false);
-      return await fireAlert("Passwords must be equal")
+      return await fireAlert("Passwords must be the same")
     }
 
     try {
