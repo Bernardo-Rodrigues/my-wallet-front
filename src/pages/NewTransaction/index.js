@@ -76,7 +76,7 @@ export default function NewTransaction(){
                     onChange={handleChange}
                     value={formData.desc}
                     disabled={isLoading}
-                    maxLength="16"
+                    maxLength="25"
                     required
                 />
 
