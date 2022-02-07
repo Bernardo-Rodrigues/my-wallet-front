@@ -13,7 +13,8 @@ export default function Registers( {userTransactions, balance, setReload} ){
     const { user, setUser } = useContext(UserContext)
 
     async function deleteItem(id){
-        const res = fireConfirm(id)
+        const res = await fireConfirm(id)
+        console.log(res)
         if (res.isConfirmed) {
             const headers = { headers: { Authorization: `Bearer ${user?.token}` }}
             try {
